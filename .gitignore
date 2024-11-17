@@ -1,0 +1,41 @@
+# macOS-specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon files
+Icon?
+
+# macOS metadata files
+._*
+
+# Lua and Neovim temporary files
+*.swp
+*.swo
+*.swn
+*.un~
+*.tmp
+
+# Backup files
+*~
+.netrwhist
+
+# Plugin manager directories (e.g., lazy.nvim, packer.nvim, etc.)
+site/
+packer_compiled.lua
+
+# Logs and temporary files
+logs/
+log/
+*.log
+
+# Compiled Lua files
+*.luac
+
+# Neovim cache directories
+cache/
+sessions/
+undodir/
+plugin-versions/
+plugin-cache/
+
