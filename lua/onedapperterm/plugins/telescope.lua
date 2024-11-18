@@ -1,3 +1,5 @@
+local loader = require("onedapperterm.utils.loader")
+
 return {
 	"nvim-telescope/telescope.nvim", 
 	tag = "0.1.8",
@@ -9,11 +11,7 @@ return {
 	},
 
 	config = function()
-		local status_ok, telescope = pcall(require, "telescope")
-		if not status_ok then
-			print("Telescope require failed")
-			return
-		end
+		local telescope = loader.load("telescope")
 
 		-- IMPORT TELESCOPE ACTIONS FOR KEYMAPS
 		local actions = require("telescope.actions")

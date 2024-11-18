@@ -1,7 +1,10 @@
+local loader = require("onedapperterm.utils.loader")
+
 return {
   "ThePrimeagen/harpoon",
   config = function()
-    local harpoon = require("harpoon")
+    local harpoon = loader.load("harpoon")
+
     harpoon:setup()
 
     vim.keymap.set("n", "<leader>af", function() 
