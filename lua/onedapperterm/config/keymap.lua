@@ -31,6 +31,14 @@ vnoremap("<C-l>", "<C-w>l")
 nnoremap("<S-up>", "<C-w>k")
 nnoremap("<S-down>", "<C-w>j")
 nnoremap("<leader>q", ":only<CR>")
+nnoremap("<leader>v", ":vsplit<CR>")
+
+--BUFFERS NAVIGATION
+nnoremap("<s-tab>", ":bprevious<CR>")
+nnoremap("<tab>", ":bnext<CR>")
+nnoremap("<s-q>", ":bd<CR>")
+nnoremap("«", ":tabclose<CR>")
+
 
 --SOME NICE MOVES
 nnoremap("<s-l>", "$")

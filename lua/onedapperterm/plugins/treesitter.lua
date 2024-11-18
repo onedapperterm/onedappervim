@@ -29,6 +29,7 @@ return {
                 "vimdoc",
             },
             sync_install = false,
+            auto_install = true,
             highlight = { enable = true },
             autopairs = { enable = true },
             indent = { 
