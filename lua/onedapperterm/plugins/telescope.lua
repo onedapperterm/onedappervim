@@ -3,8 +3,8 @@ return {
 	tag = "0.1.8",
 	dependencies = { 
 		"nvim-lua/plenary.nvim",
-		"ThePrimeagen/harpoon",
 		"nvim-telescope/telescope-file-browser.nvim",
+		{ "ThePrimeagen/harpoon", branch="harpoon2" },
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
 	},
 
@@ -69,15 +69,13 @@ return {
 			},
 			pickers = {
 				find_files = {
-					theme = "ivy",
-					previewer = false,
+                    layout_strategy = "horizontal",
 				},
 				live_grep = {
 					theme = "dropdown",
 				},
 				buffers = {
-					theme = "dropdown",
-					previewer = false,
+                    layout_strategy = "horizontal",
 				},
 			},
 			extensions = {
@@ -96,48 +94,44 @@ return {
 		telescope.load_extension("file_browser")
 
         -- GLOBAL KEYMAPS
-        local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<C-p>', builtin.find_files, { desc = "Find files", noremap = true })
-        vim.keymap.set('v', '<C-p>', builtin.find_files, { desc = "Find files", noremap = true })
-        vim.keymap.set('n', '<leader>lo', builtin.git_bcommits, { desc = "Git buffer commits" })
+        local builtin = require("telescope.builtin")
 
-        vim.keymap.set('n', '<leader>ll', function()
-            builtin.live_grep({ layout_strategy = 'bottom_pane' })
+        vim.keymap.set("n", "<C-p>", builtin.find_files, { desc = "Find files", noremap = true })   --Find files
+        vim.keymap.set("v", "<C-p>", builtin.find_files, { desc = "Find files", noremap = true })   --Find files (while visual mode)
+        vim.keymap.set("n", "<leader>lo", builtin.git_bcommits, { desc = "Git buffer commits" })    --File git commits
+
+        vim.keymap.set("n", "<leader>ll", function()                                                --Live grep fzf
+            builtin.live_grep({ layout_strategy = "bottom_pane" })
         end, { desc = "Live Grep (bottom pane)" })
 
-        vim.keymap.set('n', '<leader>r', function()
-            builtin.lsp_references({ layout_strategy = 'bottom_pane' })
-            vim.schedule(function()
-                vim.cmd('stopinsert')
-            end)
+        vim.keymap.set("n", "<leader>r", function()                                                 --Lsp References
+            builtin.lsp_references({ layout_strategy = "bottom_pane" })
+            vim.schedule(function() vim.cmd("stopinsert") end)
         end, { desc = "LSP References (bottom pane)" })
 
-        vim.keymap.set('n', '<leader>d', function()
-            builtin.lsp_definitions({ layout_strategy = 'bottom_pane' })
-            vim.schedule(function()
-                vim.cmd('stopinsert')
-            end)
+        vim.keymap.set("n", "<leader>d", function()                                                 --Lsp Definitions
+            builtin.lsp_definitions({ layout_strategy = "bottom_pane" })
+            vim.schedule(function() vim.cmd("stopinsert") end)
         end, { desc = "LSP Definitions (bottom pane)" })
 
-        vim.keymap.set('n', '<leader>fb', function()
+        vim.keymap.set("n", "<leader>h", function()                                                 --Harpoon marks
+            telescope.extensions.harpoon.marks({ layout_strategy = "vertical" })
+            vim.schedule(function() vim.cmd("stopinsert") end)
+        end, { desc = "Show harpoon marks" })
+
+        vim.keymap.set("n", "<leader>fb", function()                                                --Buffer list
             builtin.buffers()
-            vim.schedule(function()
-                vim.cmd('stopinsert')
-            end)
+            vim.schedule(function() vim.cmd("stopinsert") end)
         end, { desc = "Find buffers" })
 
-        vim.keymap.set('n', '<leader>fo', function()
+        vim.keymap.set("n", "<leader>fo", function()                                                --Recent files
             builtin.oldfiles()
-            vim.schedule(function()
-                vim.cmd('stopinsert')
-            end)
+            vim.schedule(function() vim.cmd("stopinsert") end)
         end, { desc = "Find recent files" })
 
-        vim.keymap.set('n', '<leader>ww', function()
-            builtin.grep_string({ layout_strategy = 'bottom_pane' })
-            vim.schedule(function()
-                vim.cmd('stopinsert')
-            end)
+        vim.keymap.set("n", "<leader>ww", function()                                                --Find word
+            builtin.grep_string({ layout_strategy = "bottom_pane" })
+            vim.schedule(function() vim.cmd("stopinsert") end)
         end, { desc = "Find word" })
 
 	end
