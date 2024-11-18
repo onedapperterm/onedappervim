@@ -5,7 +5,7 @@ local inoremap = Remap.inoremap
 local xnoremap = Remap.xnoremap
 
 -- temporal while I fix nvimtree
-nnoremap("<leader>t", vim.cmd.Ex)
+-- nnoremap("<leader>t", vim.cmd.Ex)
 
 --LINE COPY OPTIONS
 nnoremap("ˆ", "yyP")
