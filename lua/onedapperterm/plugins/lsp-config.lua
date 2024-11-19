@@ -13,12 +13,7 @@ local servers = {
 	"astro",
 }
 
--- -- TODO: ensure installed linter for mason 
--- local formatters = {
---     "stylua",
---     "prettier",
---     "black",
--- }
+
 
 return {
 	{
@@ -26,28 +21,33 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			-- "hrsh7th/nvim-cmp",
-			-- 'hrsh7th/cmp-nvim-lsp'
-			-- 'hrsh7th/cmp-nvim-lua'
-			-- "hrsh7th/cmp-buffer",
-			-- "hrsh7th/cmp-path",
-			-- "L3MON4D3/LuaSnip",
-			-- "saadparwaiz1/cmp_luasnip",
-			-- "j-hui/fidget.nvim",
+			"hrsh7th/nvim-cmp",
+			'hrsh7th/cmp-nvim-lsp',
+			"j-hui/fidget.nvim",
 		},
 		config = function()
+            local fidget = loader.load("fidget")
 			local mason = loader.load("mason")
 			local mason_lsp_config = loader.load("mason-lspconfig")
 			local lspconfig = loader.load("lspconfig")
 
+            fidget.setup({})
 			mason.setup()
 			mason_lsp_config.setup({
 				ensure_installed = servers,
+                -- TODO: ensure installed linters and formatters as well (black, prettier...)
 			})
 
-			lspconfig.ts_ls.setup({})
-			lspconfig.html.setup({})
-			--the others ...
+            local lsp_handlers_config = require("onedapperterm.config.lsp-handlers-config")
+            lsp_handlers_config.setup()
+
+            for _, server in ipairs(servers) do
+                lspconfig[server].setup({
+                    on_attach = function(client, bufnr)
+                        lsp_handlers_config.on_attach(client, bufnr)
+                    end
+                })
+            end
 		end,
 	},
 }
