@@ -60,12 +60,8 @@ nnoremap("y", '"*y')					                    --Copy to system clipboard on norma
 vnoremap("y", '"*y')					                    --Copy to system clipboard on visual
 nnoremap("<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])--Search and replace current word
 
--- TELESCOPE
--- nnoremap("<leader>r", ":Telescope lsp_references layout_strategy=bottom_pane<CR><ESC>")
--- nnoremap("<leader>d", ":Telescope lsp_definitions layout_strategy=bottom_pane<CR><ESC>")
--- nnoremap("<leader>lo", ":Telescope git_bcommits<CR><ESC>")
--- nnoremap("<C-p>", ":Telescope find_files<CR>")
--- nnoremap("<leader>ll", ":Telescope live_grep layout_strategy=bottom_pane<CR>")
--- inoremap("<C-p>", "<Esc>:Telescope find_files<CR>==gi")
--- vnoremap("<C-p>", ":Telescope find_files<CR>gv==gv")
---
+-- TODO-COMMENTS
+nnoremap("<leader>cm", function ()                          --Show comments on telescope
+    vim.cmd("TodoTelescope")
+    vim.schedule(function() vim.cmd("stopinsert") end)
+end)
