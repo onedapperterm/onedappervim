@@ -4,9 +4,6 @@ local vnoremap = Remap.vnoremap
 local inoremap = Remap.inoremap
 local xnoremap = Remap.xnoremap
 
--- temporal while I fix nvimtree
--- nnoremap("<leader>t", vim.cmd.Ex)
-
 --LINE COPY OPTIONS
 nnoremap("ˆ", "yyP")
 nnoremap("ı", "yyp")
@@ -60,7 +57,7 @@ nnoremap("y", '"*y')					                    --Copy to system clipboard on norma
 vnoremap("y", '"*y')					                    --Copy to system clipboard on visual
 nnoremap("<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])--Search and replace current word
 
--- TODO-COMMENTS
+-- FOR SOME PLUGGINS
 nnoremap("<leader>cm", function ()                          --Show comments on telescope
     vim.cmd("TodoTelescope")
     vim.schedule(function() vim.cmd("stopinsert") end)
