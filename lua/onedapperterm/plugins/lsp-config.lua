@@ -13,8 +13,6 @@ local servers = {
 	"astro",
 }
 
-
-
 return {
 	{
 		"neovim/nvim-lspconfig",
