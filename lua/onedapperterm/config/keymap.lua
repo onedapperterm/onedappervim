@@ -58,7 +58,16 @@ vnoremap("y", '"*y')					                    --Copy to system clipboard on visua
 nnoremap("<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])--Search and replace current word
 
 -- FOR SOME PLUGGINS
-nnoremap("<leader>cm", function ()                          --Show comments on telescope
+nnoremap("<leader>ff", ":NvimTreeFindFile<CR>")
+nnoremap("<leader>t", function()                            --Close Undotree and Toggle Nvimtree 
+    vim.cmd("UndotreeHide")
+    vim.cmd("NvimTreeToggle")
+end)
+nnoremap("<leader>u", function()                            --Close Nvimtree and Toggle Undotree 
+    vim.cmd("NvimTreeClose")
+    vim.cmd("UndotreeToggle")
+end)
+nnoremap("<leader>cm", function()                           --Show comments on telescope
     vim.cmd("TodoTelescope")
     vim.schedule(function() vim.cmd("stopinsert") end)
 end)
