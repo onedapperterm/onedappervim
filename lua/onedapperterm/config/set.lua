@@ -33,3 +33,5 @@ vim.opt.errorbells = false     -- Disable error bells
 vim.opt.updatetime = 50        -- Faster completion (default is 4000ms)
 vim.g.mapleader = " "          -- Set leader key to space
 
+
+vim.cmd [[set iskeyword+=-]]   --Take words joined with - as one
