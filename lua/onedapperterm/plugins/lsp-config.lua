@@ -17,8 +17,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
+			"mason-org/mason.nvim",
+			"mason-org/mason-lspconfig.nvim",
 			"hrsh7th/nvim-cmp",
 			'hrsh7th/cmp-nvim-lsp',
 			"j-hui/fidget.nvim",
@@ -33,6 +33,7 @@ return {
 			mason.setup()
 			mason_lsp_config.setup({
 				ensure_installed = servers,
+                automatic_enable = false
                 -- TODO: ensure installed linters and formatters as well (black, prettier...)
 			})
 

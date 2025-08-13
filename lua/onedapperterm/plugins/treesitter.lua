@@ -3,11 +3,11 @@ local loader = require("onedapperterm.utils.loader")
 return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    config = function () 
+    config = function ()
         local configs = loader.load("nvim-treesitter.configs")
 
         configs.setup({
-            ensure_installed = { 
+            ensure_installed = {
                 "javascript",
                 "typescript",
                 "python",
@@ -24,7 +24,7 @@ return {
                 "astro",
                 "vue",
                 "lua",
-                "c", 
+                "c",
                 "vim",
                 "vimdoc",
             },
@@ -32,10 +32,10 @@ return {
             auto_install = true,
             highlight = { enable = true },
             autopairs = { enable = true },
-            indent = { 
+            indent = {
                 enable = true,
                 disable = { "python", "css" }
-            },  
+            }
         })
     end
 }

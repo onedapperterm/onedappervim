@@ -3,7 +3,6 @@ local loader = require("onedapperterm.utils.loader")
 local M = {}
 
 M.setup = function()
-    print("hallo from setup")
     local signs = {
         { name = "DiagnosticSignError", text = "" },
         { name = "DiagnosticSignWarn", text = "" },
@@ -44,17 +43,6 @@ M.setup = function()
     })
 end
 
---TODO: implement illuminate for word high
--- local function lsp_highlight_document(client)
---     -- Set autocommands conditional on server_capabilities
---     local status_ok, illuminate = pcall(require, "illuminate")
---     if not status_ok then
---         return
---     end
---     illuminate.on_attach(client)
---     -- end
--- end
-
 local function lsp_keymaps(bufnr)
     local opts = { noremap = true, silent = true }
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
@@ -70,15 +58,46 @@ local function lsp_keymaps(bufnr)
 end
 
 M.on_attach = function(client, bufnr)
-    -- vim.notify(client.name .. " starting...")
     -- TODO: refactor this into a method that checks if string in list
+    -- since this shit is to avoid the f*cking change of colors of the theme that are handled from treesitter.
     if client.name == "ts_ls" or client.name == "astro" then
-        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentFormattingProvider = true
         client.server_capabilities.semanticTokensProvider = nil
     end
+
+    -- document documentHighlightProvider disabled on json to avoid weird cursor move error 
+    -- have to fix this shit as well when have time for it :P 
+    if client and client.name == "jsonls" then
+        client.server_capabilities.documentHighlightProvider = false
+    end
+
+    if client.name == 'angularls' then
+        vim.api.nvim_buf_set_option(bufnr, 'expandtab', true)   -- use spaces, not tabs
+        vim.api.nvim_buf_set_option(bufnr, 'shiftwidth', 4)     -- indent size for >>, <<, etc.
+        vim.api.nvim_buf_set_option(bufnr, 'tabstop', 4)        -- a literal tab == 4 spaces
+        vim.api.nvim_buf_set_option(bufnr, 'softtabstop', 4)    -- editing <Tab> behavior
+    end
+
+    -- Enable folding capabilities for nvim-ufo
+    if client.server_capabilities and client.name ~= "pyright" then
+        client.server_capabilities.foldingRangeProvider = {
+            dynamicRegistration = false,
+            lineFoldingOnly = true
+        }
+
+        --check this poetry thing 
+        local root_dir = client.config.root_dir or vim.fn.getcwd()
+        local env_path = vim.trim(vim.fn.system(
+            'cd "' .. root_dir .. '" && poetry env info -p 2>/dev/null'
+        ))
+        if env_path ~= "" then
+            client.config.settings = client.config.settings or {}
+            client.config.settings.python = client.config.settings.python or {}
+            client.config.settings.python.pythonPath = env_path .. "/bin/python"
+        end
+    end
+
     lsp_keymaps(bufnr)
-    -- lsp_highlight_document(client)
-    --this shit is to avoid the f*cking change of colors of the theme that are handled from treesitter.
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

@@ -27,6 +27,6 @@ return {
       [[                                                                       ]],
     }
 
-    alpha.setup(dashboard.opts)
+    alpha.setup(dashboard.config)
   end,
 }

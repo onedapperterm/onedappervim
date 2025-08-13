@@ -28,6 +28,16 @@ vim.opt.isfname:append("@-@")  -- Append '@-@' to the 'isfname' option
 vim.opt.cmdheight = 1          -- Set command line height
 vim.opt.shortmess:append("c")  -- Avoid showing extra messages in command line
 
+--UFO FOLDING SETTINGS
+vim.o.foldcolumn = '0'
+vim.o.foldlevel = 99           -- Using UFO provider need a large value
+vim.o.foldenable = true
+
+--SPELLCHECK
+vim.opt.spell = true
+vim.opt.spelllang = { "en_us" }
+vim.opt.spelloptions:append("noplainbuffer")
+
 --OTHERS
 vim.opt.errorbells = false     -- Disable error bells
 vim.opt.updatetime = 50        -- Faster completion (default is 4000ms)

@@ -57,7 +57,7 @@ nnoremap("y", '"*y')					                    --Copy to system clipboard on norma
 vnoremap("y", '"*y')					                    --Copy to system clipboard on visual
 nnoremap("<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])--Search and replace current word
 
--- FOR SOME PLUGGINS
+-- FOR SOME PLUGINS
 nnoremap("<leader>ff", ":NvimTreeFindFile<CR>")
 nnoremap("<leader>t", function()                            --Close Undotree and Toggle Nvimtree 
     vim.cmd("UndotreeHide")
@@ -71,3 +71,31 @@ nnoremap("<leader>cm", function()                           --Show comments on t
     vim.cmd("TodoTelescope")
     vim.schedule(function() vim.cmd("stopinsert") end)
 end)
+
+
+-- DIFF UNDO -- Fix and implement
+
+function DiffUndoWithFile()
+  -- Get the alternate buffer (should be your file buffer)
+  local file_buf = vim.fn.bufnr('#')
+  if file_buf < 1 then
+    print("No alternate buffer found!")
+    return
+  end
+  -- Get the lines from the file buffer (note: lines are 0-indexed in the API)
+  local file_lines = vim.api.nvim_buf_get_lines(file_buf, 0, -1, false)
+  -- Open a vertical new scratch buffer
+  vim.cmd("vnew")
+  local scratch_buf = vim.api.nvim_get_current_buf()
+  -- Set the scratch buffer options: nofile, wipe when hidden, and no swapfile.
+  vim.bo[scratch_buf].buftype = "nofile"
+  vim.bo[scratch_buf].bufhidden = "wipe"
+  vim.bo[scratch_buf].swapfile = false
+  -- Insert the lines into the scratch buffer. They remain as a list, preserving the original line breaks.
+  vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, file_lines)
+  -- Enable diff mode in the scratch buffer
+  vim.cmd("diffthis")
+  -- Go back to the previous window (the current file with its undo state) and enable diff mode there too.
+  vim.cmd("wincmd p")
+  vim.cmd("diffthis")
+end

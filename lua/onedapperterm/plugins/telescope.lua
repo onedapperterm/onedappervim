@@ -137,10 +137,15 @@ return {
 		end, { desc = "Find recent files" })
 
 		vim.keymap.set("n", "<leader>ww", function() --Find word
-			builtin.grep_string({ layout_strategy = "bottom_pane" })
+			builtin.grep_string()
 			vim.schedule(function()
 				vim.cmd("stopinsert")
 			end)
 		end, { desc = "Find word" })
+
+        vim.keymap.set("n", "z=", function()
+            builtin.spell_suggest(require("telescope.themes").get_cursor {})
+        end, { desc = "Spell Suggest" })
+
 	end,
 }
