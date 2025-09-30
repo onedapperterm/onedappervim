@@ -36,3 +36,11 @@ node
 node
 vite
 timeseries
+serializable
+intraday
+eslint
+subportfolio
+subportfolios
+EPEX
+DAYAHEAD
+DAIM

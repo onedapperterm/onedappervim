@@ -58,6 +58,18 @@ local function lsp_keymaps(bufnr)
 end
 
 M.on_attach = function(client, bufnr)
+    -- Compatibility shim: some sources may call client.request with swapped handler/bufnr
+    if client and type(client.request) == "function" then
+        local original_request = client.request
+        client.request = function(self, method, params, handler, request_bufnr)
+            -- If the 4th argument is a function, swap arguments to match Neovim's API: (method, params, handler, bufnr)
+            if type(request_bufnr) == "function" and (handler == nil or type(handler) == "number") then
+                return original_request(self, method, params, request_bufnr, handler)
+            end
+            return original_request(self, method, params, handler, request_bufnr)
+        end
+    end
+
     -- TODO: refactor this into a method that checks if string in list
     -- since this shit is to avoid the f*cking change of colors of the theme that are handled from treesitter.
     if client.name == "ts_ls" or client.name == "astro" then

@@ -27,7 +27,6 @@ return {
             local fidget = loader.load("fidget")
 			local mason = loader.load("mason")
 			local mason_lsp_config = loader.load("mason-lspconfig")
-			local lspconfig = loader.load("lspconfig")
 
             fidget.setup({})
 			mason.setup()
@@ -40,13 +39,22 @@ return {
             local lsp_handlers_config = require("onedapperterm.config.lsp-handlers-config")
             lsp_handlers_config.setup()
 
-            for _, server in ipairs(servers) do
-                lspconfig[server].setup({
-                    on_attach = function(client, bufnr)
-                        lsp_handlers_config.on_attach(client, bufnr)
-                    end
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function(args)
+                    local bufnr = args.buf
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+                    print("LSP attached: " .. client.name)
+                    lsp_handlers_config.on_attach(client, bufnr)
+                end,
+            })
+
+			for _, server in ipairs(servers) do
+                vim.lsp.config(server, {
+					capabilities = lsp_handlers_config.capabilities,
                 })
-            end
+                vim.lsp.enable(server)
+			end
 		end,
 	},
 }
