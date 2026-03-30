@@ -44,7 +44,6 @@ return {
                     local bufnr = args.buf
                     local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-                    print("LSP attached: " .. client.name)
                     lsp_handlers_config.on_attach(client, bufnr)
                 end,
             })

@@ -72,6 +72,12 @@ nnoremap("<leader>cm", function()                           --Show comments on t
     vim.schedule(function() vim.cmd("stopinsert") end)
 end)
 
+-- DAP
+nnoremap("<leader>dc", require("dap").continue)
+nnoremap("<leader>db", require("dap").toggle_breakpoint)
+nnoremap("<leader>l", require("dap").step_over)
+nnoremap("<leader>di", require("dap").step_into)
+nnoremap("<leader>do", require("dap").step_out)
 
 -- DIFF UNDO -- Fix and implement
 

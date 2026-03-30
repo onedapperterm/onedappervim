@@ -4,19 +4,17 @@ local M = {}
 
 M.setup = function()
     local signs = {
-        { name = "DiagnosticSignError", text = "" },
-        { name = "DiagnosticSignWarn", text = "" },
-        { name = "DiagnosticSignHint", text = "" },
-        { name = "DiagnosticSignInfo", text = "" },
+        text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.INFO] = " ",
+            [vim.diagnostic.severity.HINT] = "󰠠 ",
+        },
     }
-
-    for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-    end
 
     local config = {
         virtual_text = false, -- disable virtual text
-        signs = { active = signs, },-- show signs
+        signs = signs,
         update_in_insert = true,
         underline = true,
         severity_sort = true,
@@ -88,25 +86,6 @@ M.on_attach = function(client, bufnr)
         vim.api.nvim_buf_set_option(bufnr, 'shiftwidth', 4)     -- indent size for >>, <<, etc.
         vim.api.nvim_buf_set_option(bufnr, 'tabstop', 4)        -- a literal tab == 4 spaces
         vim.api.nvim_buf_set_option(bufnr, 'softtabstop', 4)    -- editing <Tab> behavior
-    end
-
-    -- Enable folding capabilities for nvim-ufo
-    if client.server_capabilities and client.name ~= "pyright" then
-        client.server_capabilities.foldingRangeProvider = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true
-        }
-
-        --check this poetry thing 
-        local root_dir = client.config.root_dir or vim.fn.getcwd()
-        local env_path = vim.trim(vim.fn.system(
-            'cd "' .. root_dir .. '" && poetry env info -p 2>/dev/null'
-        ))
-        if env_path ~= "" then
-            client.config.settings = client.config.settings or {}
-            client.config.settings.python = client.config.settings.python or {}
-            client.config.settings.python.pythonPath = env_path .. "/bin/python"
-        end
     end
 
     lsp_keymaps(bufnr)

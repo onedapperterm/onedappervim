@@ -5,6 +5,10 @@ return {
     config = function()
         local harpoon = loader.load("harpoon")
 
+        if not harpoon then
+            return
+        end
+
         harpoon:setup()
 
         vim.keymap.set("n", "<leader>af", function()
